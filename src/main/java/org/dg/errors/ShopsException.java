@@ -1,0 +1,39 @@
+package org.dg.errors;
+
+import org.dg.utils.SerializeDeserialiseUtils;
+
+import io.quarkus.logging.Log;
+
+public class ShopsException extends RuntimeException {
+
+    public final ShopsErrors error;
+
+    public ShopsException(ShopsErrors error) {
+        super(error.getDescription());
+        this.error = error;
+        logError(this);
+    }
+
+    public ShopsException(ShopsErrors error, String detail) {
+        super(detail);
+        this.error = error;
+        logError(this);
+    }
+
+    public ShopsException(ShopsErrors error, String technicalError, Throwable stack) {
+        super(technicalError, stack);
+        this.error = error;
+        logError(this);
+    }
+
+    private static void logError(ShopsException e) {
+        Log.error("Erreur " + e.error.getStatus().getStatusCode() + " " + e.error.getStatus().getReasonPhrase() + " : "
+                + e.error.getDescription());
+        Log.error(e.getCause().getMessage());
+    }
+
+    @Override
+    public String toString() {
+        return SerializeDeserialiseUtils.serializeObjectToJSON(this);
+    }
+}
