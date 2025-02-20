@@ -3,10 +3,12 @@ package org.dg.errors;
 import org.dg.utils.SerializeDeserialiseUtils;
 
 import io.quarkus.logging.Log;
+import lombok.Getter;
 
+@Getter
 public class ShopsException extends RuntimeException {
 
-    public final ShopsErrors error;
+    private final ShopsErrors error;
 
     public ShopsException(ShopsErrors error) {
         super(error.getDescription());

@@ -26,7 +26,7 @@ public class TypesFormulairesController {
 
     @ServerExceptionMapper
     public RestResponse<String> mapException(ShopsException e) {
-        return RestResponse.status(e.error.getStatus(), e.error.getDescription());
+        return RestResponse.status(e.getError().getStatus(), e.getError().getDescription());
     }
 
     @Inject

@@ -1,8 +1,5 @@
 package org.dg.controllers;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 import org.dg.dto.Formulaire;
@@ -29,8 +26,8 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 public class FormulairesController {
 
-    private FormulairesService formulairesService;
-    private DriveService driveService;
+    private final FormulairesService formulairesService;
+    private final DriveService driveService;
 
     @Inject
     public FormulairesController(FormulairesService formulairesService, DriveService driveService) {
@@ -40,7 +37,7 @@ public class FormulairesController {
 
     @ServerExceptionMapper
     public RestResponse<String> mapException(ShopsException e) {
-        return RestResponse.status(e.error.getStatus(), e.error.getDescription());
+        return RestResponse.status(e.getError().getStatus(), e.getError().getDescription());
     }
 
     @GET
@@ -59,21 +56,24 @@ public class FormulairesController {
     @Transactional
     public RestResponse<String> postFormulaire(String body) {
         Log.info("postFormulaire = " + body);
-        // try (BufferedWriter writer = new BufferedWriter(new FileWriter("postFormulaireDPGD.json"))) {
-        //     writer.write(body);
+        // try (BufferedWriter writer = new BufferedWriter(new
+        // FileWriter("postFormulaireDPGD.json"))) {
+        // writer.write(body);
         // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
         // }
         // Création et persist en base
         Formulaire formulaire = formulairesService.createNewForm(new Formulaire().fromJsonString(body));
         Log.info("formulaireCree = " + formulaire);
-        // try (BufferedWriter writer = new BufferedWriter(new FileWriter("postFormulaireFermeResponse.json"))) {
-        //     writer.write(formulaire.toString());
+        // try (BufferedWriter writer = new BufferedWriter(new
+        // FileWriter("postFormulaireFermeResponse.json"))) {
+        // writer.write(formulaire.toString());
         // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
         // }
+        // TODO faire un retour 201
         return ResponseBuilder.ok(formulaire.toString(), MediaType.APPLICATION_JSON).build();
     }
 

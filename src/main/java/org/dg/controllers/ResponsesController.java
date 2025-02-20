@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ResponsesController {
 
-    private FormulairesService formulairesService;
+    private final FormulairesService formulairesService;
 
     @Inject
     public ResponsesController(FormulairesService formulairesService) {
@@ -29,7 +29,7 @@ public class ResponsesController {
 
     @ServerExceptionMapper
     public RestResponse<String> mapException(ShopsException e) {
-        return RestResponse.status(e.error.getStatus(), e.error.getDescription());
+        return RestResponse.status(e.getError().getStatus(), e.getError().getDescription());
     }
 
     @GET

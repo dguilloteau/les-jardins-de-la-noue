@@ -9,6 +9,7 @@ import org.dg.dto.FormItemId;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class FList extends FormItem {
     @Column(columnDefinition = "VARCHAR(255)")
     private String type;
 
-    @OneToMany(targetEntity = FListElement.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FListElement.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fList_id", referencedColumnName = "id", nullable = false)
     private List<FListElement> listeChoix = new ArrayList<>();
 

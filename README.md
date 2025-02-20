@@ -1,6 +1,30 @@
 # les-jardins-de-la-noue
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Ce projet créé et envoi des google forms dans le google drive.
+
+TODOS : Envoyer les formulaires à une liste de clients pour en récupérer leurs réponses (commandes).
+        Imprimer les comandes des clients
+
+## Détection des items pour l'importation des anciens formulaires :
+    "ENTETE"
+    "IMAGE_BANDEAU"     image avec titre à null
+    "E_MAIL"            question avec titre renseigné qui contient MAIL
+    "NOM_PRENOM"        question avec titre renseigné qui contient NOM
+    "PANIER"            liste avec titre renseigné qui contient PANIER
+    "LOCALISATION"      image avec titre renseigné qui contient LOCALISATION
+    "CAGETTE"           liste avec titre renseigné qui contient CAGETTE
+    "FORMULE"           liste avec titre renseigné qui contient FORMULE
+    "COMPOSITION"       text avec description renseigné qui contient COMPOSEZ
+    "AUTRE"
+
+    Les nouveaux fomulaires créé seront tester avec leur ID
+
+
+
+
+
+
+<!-- This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
@@ -60,20 +84,4 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
-
-
-
-
-Détection des items pour l'imortation des anciens formulaires :
-    "ENTETE"
-    "IMAGE_BANDEAU"     image avec titre à null
-    "E_MAIL"            question avec titre renseigné qui contient MAIL
-    "NOM_PRENOM"        question avec titre renseigné qui contient NOM
-    "PANIER"            liste avec titre renseigné qui contient PANIER
-    "LOCALISATION"      image avec titre renseigné qui contient LOCALISATION
-    "CAGETTE"           liste avec titre renseigné qui contient CAGETTE
-    "FORMULE"           liste avec titre renseigné qui contient FORMULE
-    "COMPOSITION"       text avec description renseigné qui contient COMPOSEZ
-    "AUTRE"
-
-    Les nouveaux fomulaires créé seront tester avec leur ID
+ -->

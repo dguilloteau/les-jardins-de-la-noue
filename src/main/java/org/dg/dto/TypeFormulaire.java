@@ -10,6 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class TypeFormulaire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
     // C'est un type de formulaire par defaut
     @Column(columnDefinition = "BOOLEAN DEFAULT false", nullable = false)
@@ -38,7 +39,7 @@ public class TypeFormulaire {
     private String type;
 
     // Liste des items du type de formulaire
-    @OneToMany(targetEntity = FormItem.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FormItem.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_FormItem_TypeFormulaire", value = ConstraintMode.CONSTRAINT), name = "typeFormulaire_id", referencedColumnName = "id")
     List<FormItem> formItems;
 

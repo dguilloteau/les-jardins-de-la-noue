@@ -17,8 +17,8 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class TypesFormulairesService {
 
-    TypeFormulaireRepository typeFormulaireRepository;
-    FormItemRepository formItemRepository;
+    private final TypeFormulaireRepository typeFormulaireRepository;
+    private final FormItemRepository formItemRepository;
 
     @Inject
     public TypesFormulairesService(TypeFormulaireRepository typeFormulaireRepository,

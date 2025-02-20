@@ -56,10 +56,10 @@ import jakarta.inject.Inject;
 public class FormulairesService {
 
     private static final String READER_ROLE = "reader";
-    CredentialService credentialService;
-    FormulaireRepository formulaireRepository;
-    TypeFormulaireRepository typeFormulaireRepository;
-    DriveService driveService;
+    private final CredentialService credentialService;
+    private final FormulaireRepository formulaireRepository;
+    private final TypeFormulaireRepository typeFormulaireRepository;
+    private final DriveService driveService;
 
     @Inject
     public FormulairesService(CredentialService credentialService, FormulaireRepository formulaireRepository,
