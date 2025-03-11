@@ -22,7 +22,8 @@ jobs:
     services:
       db:
         env:
-          MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MARIADB_ROOT_PASSWORD: "test"
+          # ${{ secrets.MYSQL_ROOT_PASSWORD }}
           MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
           MARIADB_USER: ${{ secrets.MYSQL_USER }}
           MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
