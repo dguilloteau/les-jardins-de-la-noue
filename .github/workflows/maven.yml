@@ -30,7 +30,7 @@ jobs:
     - name: Install mariaDB
       run: sudo apt-get install mariadb-server
     - name: Initialize database
-      run: scripts/mariadb-install-db --user=mysql --basedir=/opt/mysql/mysql --datadir=/opt/mysql/mysql/data
+      run: sudo scripts/mariadb-install-db --user=mysql --basedir=/opt/mysql/mysql --datadir=/opt/mysql/mysql/data
     - name: Build with Maven
       run: mvn clean package -B -U
 
