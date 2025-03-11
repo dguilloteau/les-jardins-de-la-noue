@@ -22,10 +22,10 @@ jobs:
     services:
       db:
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MARIADB_USER: ${{ secrets.MYSQL_USER }}
+          MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         image: mariadb:11.4
         options: >
           --health-cmd="healthcheck.sh --connect --innodb_initialized"
