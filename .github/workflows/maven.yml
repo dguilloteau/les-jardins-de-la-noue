@@ -19,6 +19,19 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        image: mariadb:11.4
+        options: >
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+        ports:
+          - 3306:5432
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
@@ -27,10 +40,10 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Install mariaDB
-      run: sudo apt-get install mariadb-server
+    # - name: Install mariaDB
+    #   run: sudo apt-get install mariadb-server
     - name: Initialize database
-      run: sudo mariadb-install-db --verbose --user=mysql && mariadb --user=mysql < scripts/db/install-db-tests.sql
+      run: mariadb --user=${MYSQL_USER} < scripts/db/install-db-tests.sql
     - name: Build with Maven
       run: mvn clean package -B -U
 
