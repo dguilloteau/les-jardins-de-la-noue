@@ -12,7 +12,5 @@ public abstract class Converter {
 
     public abstract String toString();
 
-    // public abstract <T> T from(T obj);
-
     protected abstract Object fromJsonString(String json);
 }

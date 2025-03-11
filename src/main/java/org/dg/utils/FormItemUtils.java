@@ -33,7 +33,7 @@ public class FormItemUtils {
      * @param form
      * @return
      */
-    public static List<FormItem> getFromForm(TypeFormulaire defaulTypeFormulaire, Form form) {
+    public static List<FormItem> getFormItemsFromDefaultTypeFormulaire(TypeFormulaire defaulTypeFormulaire, Form form) {
         Log.debug("form = " + form);
         List<FormItem> formItems = new ArrayList<>();
 

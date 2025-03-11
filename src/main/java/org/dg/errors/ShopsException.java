@@ -31,7 +31,10 @@ public class ShopsException extends RuntimeException {
     private static void logError(ShopsException e) {
         Log.error("Erreur " + e.error.getStatus().getStatusCode() + " " + e.error.getStatus().getReasonPhrase() + " : "
                 + e.error.getDescription());
-        Log.error(e.getCause().getMessage());
+        if (e.getCause() != null) {
+            Log.error(e.getCause().getMessage());
+        }
+        Log.error(e.getMessage());
     }
 
     @Override

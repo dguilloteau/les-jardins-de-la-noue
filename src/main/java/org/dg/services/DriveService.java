@@ -32,19 +32,19 @@ public class DriveService {
     /**
      * Return true si le fomulaire a bien été publié
      * 
-     * @param formId du formulaire
+     * @param formulaire
      * @return true or false
      */
-    public boolean publishForm(String formId) {
+    public boolean publishForm(Formulaire formulaire) {
         PermissionList list;
         try {
-            list = credentialService.getDriveService().permissions().list(formId).execute();
+            list = credentialService.getDriveService().permissions().list(formulaire.getFormId()).execute();
 
             if (list.getPermissions().stream().filter(it -> it.getRole().equals(READER_ROLE)).findAny().isEmpty()) {
                 Permission body = new Permission();
                 body.setRole(READER_ROLE);
                 body.setType("anyone");
-                credentialService.getDriveService().permissions().create(formId, body).execute();
+                credentialService.getDriveService().permissions().create(formulaire.getFormId(), body).execute();
                 return true;
             }
         } catch (IOException e) {

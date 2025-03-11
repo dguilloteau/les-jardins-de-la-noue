@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: cont_mailhog_server
+    hostname: mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+networks:
+  default: {}

@@ -21,9 +21,9 @@ import org.dg.errors.ShopsErrors;
 import org.dg.errors.ShopsException;
 import org.dg.repositories.FormulaireRepository;
 import org.dg.repositories.TypeFormulaireRepository;
+import org.dg.utils.ClientsUtils;
 import org.dg.utils.FormItemUtils;
 
-import com.google.api.client.util.DateTime;
 import com.google.api.services.drive.model.Permission;
 import com.google.api.services.drive.model.PermissionList;
 import com.google.api.services.forms.v1.model.BatchUpdateFormRequest;
@@ -262,7 +262,7 @@ public class FormulairesService {
         }
     }
 
-    private void transformInQuiz(String formId) {
+    private void transformInQuiz(Formulaire formulaire) {
         BatchUpdateFormRequest batchRequest = new BatchUpdateFormRequest();
         Request request = new Request();
 
@@ -276,7 +276,7 @@ public class FormulairesService {
         Log.debug("batchRequest = " + batchRequest.toString());
 
         try {
-            credentialService.getFormsService().forms().batchUpdate(formId, batchRequest).execute();
+            credentialService.getFormsService().forms().batchUpdate(formulaire.getFormId(), batchRequest).execute();
         } catch (IOException e) {
             throw new ShopsException(ShopsErrors.GENERATION_ERROR, "Erreur lors de transformInQuiz", e);
         }
@@ -304,21 +304,19 @@ public class FormulairesService {
 
         try {
             form = credentialService.getFormsService().forms().create(form).execute();
-            Log.info("formbla = " + form);
         } catch (IOException e) {
             throw new ShopsException(ShopsErrors.GENERATION_ERROR, "Erreur lors de createNewForm", e);
         }
-        formulaire.setFormId(form.getFormId());
 
-        if (!driveService.publishForm(form.getFormId())) {
+        formulaire.initNewFormulaire(form);
+
+        if (!driveService.publishForm(formulaire)) {
             throw new ShopsException(ShopsErrors.INVALID_PUBLISH_MESSAGE);
         }
 
         updateFormInfo(formulaire);
         addItemsToForm(formulaire);
-        transformInQuiz(form.getFormId());
-
-        formulaire.initNewFormulaire();
+        transformInQuiz(formulaire);
 
         formulaireRepository.save(formulaire);
 
@@ -363,17 +361,23 @@ public class FormulairesService {
                     defaulTypeFormulaire = typeFormulaireRepository.getAllDefaultTypeFormulaire().stream()
                             .filter(dtf -> form.getInfo().getTitle().contains(dtf.getType()))
                             .findFirst()
+                            // Le type de formulaire n'a pas été trouvé par son type dans le titre, alors on
+                            // prendra le 1er
                             .orElseGet(() -> typeFormulaireRepository.findById(1L).orElseThrow());
                 } catch (Exception e) {
                     throw new ShopsException(ShopsErrors.SQL_ERROR, "Le type de formulaire n'a pas été trouvé", e);
                 }
+                ClientsUtils.initClientsOfTypeFormulaire(defaulTypeFormulaire);
 
                 TypeFormulaire typeFormulaire = new TypeFormulaire(
                         false,
                         defaulTypeFormulaire.getType(),
-                        FormItemUtils.getFromForm(defaulTypeFormulaire, form));
+                        FormItemUtils.getFormItemsFromDefaultTypeFormulaire(defaulTypeFormulaire, form));
 
                 formulaire.setTypeFormulaire(typeFormulaire);
+
+                formulaire.setResponderUri(form.getResponderUri());
+
                 formulaireRepository.save(formulaire);
                 lFormulaires.add(formulaire);
             }

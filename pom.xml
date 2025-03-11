@@ -98,6 +98,16 @@
             <version>3.5.2</version>
         </dependency>
 
+        <!-- Mails -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-mailer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.qute.web</groupId>
+            <artifactId>quarkus-qute-web</artifactId>
+        </dependency>
+
         <!-- Cryptage des mots de pass: -->
         <dependency>
             <groupId>io.smallrye.config</groupId>

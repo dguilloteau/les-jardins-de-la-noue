@@ -26,7 +26,7 @@ public class TypesFormulairesController {
 
     @ServerExceptionMapper
     public RestResponse<String> mapException(ShopsException e) {
-        return RestResponse.status(e.getError().getStatus(), e.getError().getDescription());
+        return RestResponse.status(e.getError().getStatus(), e.getError().getDescription() + " => " + e.getMessage());
     }
 
     @Inject
@@ -48,11 +48,10 @@ public class TypesFormulairesController {
 
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public RestResponse<String> getFormType(@PathParam("id") Long id) {
         Log.info("getFormType id = " + id);
-        String jsonResponse = typesFormulairesService.getFormType(id).toString();
+        String jsonResponse = typesFormulairesService.getTypeFormulaire(id).toString();
         Log.debug("jsonResponse = " + jsonResponse);
 
         return ResponseBuilder.ok(jsonResponse, MediaType.APPLICATION_JSON)
@@ -60,15 +59,14 @@ public class TypesFormulairesController {
     }
 
     @PATCH
-    @Path("/patch")
+    @Path("/formItem")
     @Transactional
-    public RestResponse<String> patchFormType(String body) {
-        Log.info("patchFormType");
+    public RestResponse<String> patchFormItemType(String body) {
+        Log.info("patchFormItemType");
         Log.info("body = " + body);
-
-        typesFormulairesService.patchFormType(body);
-
+        typesFormulairesService.patchFormItemType(body);
         return ResponseBuilder.ok("OK", MediaType.APPLICATION_JSON)
                 .build();
     }
+
 }

@@ -7,6 +7,7 @@ import org.dg.dto.FormItem;
 import org.dg.dto.TypeFormulaire;
 import org.dg.errors.ShopsErrors;
 import org.dg.errors.ShopsException;
+import org.dg.repositories.ClientRepository;
 import org.dg.repositories.FormItemRepository;
 import org.dg.repositories.TypeFormulaireRepository;
 
@@ -21,8 +22,10 @@ public class TypesFormulairesService {
     private final FormItemRepository formItemRepository;
 
     @Inject
-    public TypesFormulairesService(TypeFormulaireRepository typeFormulaireRepository,
-            FormItemRepository formItemRepository) {
+    public TypesFormulairesService(
+            TypeFormulaireRepository typeFormulaireRepository,
+            FormItemRepository formItemRepository,
+            ClientRepository clientRepository) {
         this.typeFormulaireRepository = typeFormulaireRepository;
         this.formItemRepository = formItemRepository;
         if (typeFormulaireRepository.getAllDefaultTypeFormulaire().isEmpty()) {
@@ -36,7 +39,7 @@ public class TypesFormulairesService {
         return typeFormulaireRepository.getAllDefaultTypeFormulaire();
     }
 
-    public TypeFormulaire getFormType(Long id) {
+    public TypeFormulaire getTypeFormulaire(Long id) {
         try {
             return typeFormulaireRepository.findById(id).orElseThrow();
         } catch (Exception e) {
@@ -44,9 +47,10 @@ public class TypesFormulairesService {
         }
     }
 
-    public void patchFormType(String body) {
+    public void patchFormItemType(String body) {
         FormItem formItem = new FormItem().fromJsonString(body);
         Log.debug("formItem = " + formItem);
         formItemRepository.save(formItem);
     }
+
 }

@@ -1,9 +1,11 @@
 package org.dg.dto;
 
 import org.dg.dto.items.FList;
+import org.dg.utils.ClientsUtils;
 import org.dg.utils.Converter;
 
 import com.google.api.client.util.DateTime;
+import com.google.api.services.forms.v1.model.Form;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,19 +52,28 @@ public class Formulaire extends Converter {
     @Column(columnDefinition = "BOOLEAN DEFAULT false", nullable = false)
     private boolean done;
 
+    // L'uri du questionnaire de réponses
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String responderUri;
+
     public Formulaire(String formId, TypeFormulaire typeFormulaire, String dateDerniereModif) {
         this.formId = formId;
         this.typeFormulaire = typeFormulaire;
         this.dateDerniereModif = dateDerniereModif;
         this.created = true;
         this.done = false; // FIXME à renseigner
+        this.responderUri = null;
     }
 
     /**
-     * Il faut remettre l'id à null pour qu'il soit regénéré lors de
+     * Il faut remettre les id à null pour qu'il soient regénéré lors de
      * l'enregistrement
      */
-    public void initNewFormulaire() {
+    public void initNewFormulaire(Form form) {
+        // Id du formulaire
+        this.setId(null);
+        // Up formId
+        this.setFormId(form.getFormId());
         // Id de TypeFormulaire
         this.getTypeFormulaire().setId(null);
         this.getTypeFormulaire().getFormItems().forEach(item -> {
@@ -73,12 +84,18 @@ public class Formulaire extends Converter {
             // Id de FormItem
             item.setId(null);
         });
+        // Id de Clients
+        ClientsUtils.initClientsOfTypeFormulaire(this.getTypeFormulaire());
         // Le type de formulaire enregistré n'est pas un défaut
         this.getTypeFormulaire().setDefaut(false);
         // Ajout de la date de dernière modif qui est now
         this.setDateDerniereModif(new DateTime(System.currentTimeMillis()).toString());
         // Le formulaire est créé
         this.setCreated(true);
+        // Le formulaire n'est pas terminé
+        this.setDone(false);
+        // Uri des réponses
+        this.setResponderUri(form.getResponderUri());
     }
 
     @Override
