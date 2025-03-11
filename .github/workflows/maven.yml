@@ -22,11 +22,10 @@ jobs:
     services:
       db:
         env:
-          MARIADB_ROOT_PASSWORD: "test"
-          # ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MARIADB_USER: ${{ secrets.MYSQL_USER }}
-          MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MARIADB_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+          MARIADB_DATABASE: $MYSQL_DATABASE
+          MARIADB_USER: $MYSQL_USER
+          MARIADB_PASSWORD: $MYSQL_PASSWORD
         image: mariadb:11.4
         options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
         ports:
@@ -40,12 +39,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    # - name: Install mariaDB
-    #   run: sudo apt-get install mariadb-server
-    - name: Initialize database
-      run: mariadb --user=${MYSQL_USER} < scripts/db/install-db-tests.sql
     - name: Build with Maven
-      run: mvn clean package -B -U
+      run: echo $MYSQL_ROOT_PASSWORD && mvn clean package -B -U
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
