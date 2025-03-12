@@ -22,10 +22,10 @@ jobs:
     services:
       db:
         env:
-          MARIADB_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-          MARIADB_DATABASE: $MYSQL_DATABASE
-          MARIADB_USER: $MYSQL_USER
-          MARIADB_PASSWORD: $MYSQL_PASSWORD
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MARIADB_USER: ${{ secrets.MYSQL_USER }}
+          MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         image: mariadb:11.4
         options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
         ports:
@@ -38,9 +38,13 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: maven
-    - name: Init database
-      run: sudo scripts/mariadb-install-db.sh
+    - name: Cache local Maven repository
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Build with Maven
       run: mvn clean package -B -U
 
