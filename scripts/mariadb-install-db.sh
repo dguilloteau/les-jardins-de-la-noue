@@ -1,5 +1,5 @@
 #!/bin/bash
 
 ls -l
-service mysqld start
+service mariadb status
 mysql < scripts/db/install-db-tests.sql
