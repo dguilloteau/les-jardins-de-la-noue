@@ -14,16 +14,18 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-  MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-  MARIADB_USER: ${{ secrets.MYSQL_USER }}
-  MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    env:
+      MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MARIADB_USER: ${{ secrets.MYSQL_USER }}
+      MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
     services:
       db:
