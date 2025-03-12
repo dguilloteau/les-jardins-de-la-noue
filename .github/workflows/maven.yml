@@ -51,10 +51,6 @@ jobs:
         cache: maven
     - name: Init database
       run: |
-        export MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-        export MARIADB_DATABASE=${MARIADB_DATABASE}
-        export MARIADB_USER=${MARIADB_USER}
-        export MARIADB_PASSWORD=${MARIADB_PASSWORD}
         sudo sh scripts/mariadb-install-db.sh
     - name: Build with Maven
       run: mvn clean package -B -U
