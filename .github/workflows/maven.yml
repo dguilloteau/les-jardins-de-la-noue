@@ -14,18 +14,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
-
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    # env:
-    #   MARIADB_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-    #   MARIADB_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-    #   MARIADB_USER: ${{ secrets.MYSQL_USER }}
-    #   MARIADB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
     services:
       db:
@@ -41,17 +33,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    # - name: test
-    #   run: echo $MARIADB_ROOT_PASSWORD
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: maven
-    # - name: Init database
-    #   run: |
-    #     sudo sh scripts/mariadb-install-db.sh
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven
       run: mvn clean package -B -U
 
