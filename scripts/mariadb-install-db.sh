@@ -1,4 +1,5 @@
 #!/bin/bash
 
 ls -l
-mariadb < scripts/db/install-db-tests.sql
+service mysqld start
+mysql < scripts/db/install-db-tests.sql
