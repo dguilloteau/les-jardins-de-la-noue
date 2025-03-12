@@ -1,4 +1,4 @@
 #!/bin/bash
 
 ls -l
-mysql < scripts/db/install-db-tests.sql
+mariadb < scripts/db/install-db-tests.sql
